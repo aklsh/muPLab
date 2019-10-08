@@ -6,4 +6,4 @@
 *.jpg
 *.jpeg
 Books/
-*/Icon
+Icon^M
