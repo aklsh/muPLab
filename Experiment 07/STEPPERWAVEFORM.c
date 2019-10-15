@@ -4,7 +4,8 @@ void delay()
 {
     int i;
 
-    for(i = 0;i < 0x0F;i++);
+    for(i = 0;i < 0xFF;i++)
+        for(j = 0;j < 0xFF;j++);
 }
 
 int main()
@@ -13,7 +14,7 @@ int main()
     int i;
     while(1)
     {
-        for (i = 0;i < 0x04;i++)
+        for (i = 0;i < 4;i++)
         {
             IOPIN0 = 0x00000280;
             delay();
@@ -25,7 +26,7 @@ int main()
             delay();
         }
 
-        for (i = 0;i < 0x04;i++)
+        for (i = 0;i < 4;i++)
         {
             IOPIN0 = 0x00000140;
             delay();
