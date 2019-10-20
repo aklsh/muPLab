@@ -3,8 +3,8 @@
 void dLAY(int n)
 {
     int i,j;
-    for(i=0;i<n;i++);
-    for(j=0;j<0x0F;j++);
+    for(i=0;i<n;i++)
+        for(j=0;j<0x0F;j++);
 }
 
 int main (void)
@@ -14,6 +14,8 @@ int main (void)
     PINSEL1=0x00200000;
     int value;
     int i=0;
+
+    //  Lookup Table for sine values
     int sin_wave[101]={0x200,0x220,0x240,0x25f,0x27f,
     0x29e,0x2bc,0x2d9,0x2f6,0x312,0x32c,0x346,0x35e,0x374,
     0x38a,0x39d,0x3af,0x3c0,0x3ce,0x3db,0x3e6,0x3ef,0x3f6,
@@ -28,8 +30,7 @@ int main (void)
 
     while(1)
     {
-            //Sine wave
-        /*
+        //Sine Wave
         i=0;
         while(i<101)
         {
@@ -38,28 +39,6 @@ int main (void)
             dLAY(100);
             i++;
         }
-        */
-            //Triangular
-        /*
-        value=0;
-        while(value!=1023)
-        {
-            DACR=((1<<16)|(value<<6));
-            value++;
-        }
-        while (value!= 0)
-        {
-            DACR=((1<<16)|(value<<6));
-            value--;
-        }
-        */
-            //Square
-        value=1023;
-        DACR=(value<<6);
-        dLAY(100);
-        value=0;
-        DACR=(value<<6);
-        dLAY(100);
     }
     return 0;
 }

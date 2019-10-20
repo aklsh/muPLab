@@ -1,7 +1,7 @@
 #include "LPC23xx.h"
 
 /*******************************************************************************
-***************** Routine to set processor and pheripheral clock ***************
+***************** Routine to set processor and peripheral clock ***************
 *******************************************************************************/
 void TargetResetInit(void)
 {
@@ -39,7 +39,7 @@ void TargetResetInit(void)
     PCLKSEL1=0x55555555;
 }
 /*******************************************************************************
-************************ serial Transmission routine ***************************
+************************ Serial Transmission Routine ***************************
 *******************************************************************************/
 void serial_tx(int ch)
 {
@@ -47,39 +47,37 @@ void serial_tx(int ch)
     U0THR=ch;
 }
 /*******************************************************************************
-************************** Hex to ASCII routine ********************************
+************************** Hex to ASCII Routine ********************************
 *******************************************************************************/
 int atoh(int ch)
 {
     if(ch<=0x09)
-        ch=ch + 0x30;
+        ch=ch+0x30;
     else
-        ch=ch + 0x37;
+        ch=ch+0x37;
     return(ch);
 }
 /*******************************************************************************
-************************** main routine ****************************************
+************************** Main Routine ****************************************
 *******************************************************************************/
 int main()
 {
     unsigned int Fdiv,value,i,j;
-    //char value;
     TargetResetInit();
-    //init_timer( ((72000000/100) - 1) );
 
     PCONP|=0X00001000; // switch ADC from disable state to enable state
-    PINSEL0=0x00000050; // Pinselection for uart tx and rx lines
+    PINSEL0=0x00000050; // Pinselection for UART TX and RX lines
     PINSEL1=0X01554000; // Pinselection for ADC0.0
-    /******************* Uart initialization *******************************/
+    /******************* UART Initialization *******************************/
     U0LCR=0x83; // 8 bits, no Parity, 1 Stop bit
-    Fdiv=( 72000000/16 )/19200 ; // Baud rate
+    Fdiv=(72000000/16)/19200 ; // Baud rate
     U0DLM=Fdiv/256;
     U0DLL=Fdiv%256;
     U0LCR=0x03; // DLAB=0
     AD0CR=0X01210F01; // ADC initialization
     while(1)
     {
-        while((AD0DR0&0X80000000)!=0X80000000){}; // Wait here until adc make conversion complete
+        while((AD0DR0&0X80000000)!=0X80000000){}; // Wait here until ADC make conversion complete
         /****** To get converted value and display it on the serial port ******/
         value=(AD0DR0>>6)& 0x3ff ;    //ADC value
         serial_tx('\t');

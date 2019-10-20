@@ -1,11 +1,11 @@
 #include "LPC23xx.h"
 
 /*******************************************************************************
-***************** Routine to set processor and pheripheral clock ***************
+***************** Routine to set processor and peripheral clock ****************
 *******************************************************************************/
 void TargetResetInit(void)
 {
-    // 72 Mhz Frequency
+    // 72 MHz Frequency
     if((PLLSTAT&0x02000000)>0)
     {
         /* If the PLL is already running */
@@ -39,7 +39,7 @@ void TargetResetInit(void)
     PCLKSEL1=0x55555555;
 }
 /*******************************************************************************
-************************ serial Reception routine ******************************
+************************ Serial Reception Routine ******************************
 *******************************************************************************/
 int serial_rx(void)
 {
@@ -47,7 +47,7 @@ int serial_rx(void)
     return(U0RBR);
 }
 /*******************************************************************************
-************************ serial Transmission routine ***************************
+************************ Serial Transmission Routine ***************************
 *******************************************************************************/
 void serial_tx(int ch)
 {
@@ -55,7 +55,7 @@ void serial_tx(int ch)
     U0THR=ch;
 }
 /*******************************************************************************
-************ serial Transmission routine for a string of characters ************
+************ Serial Transmission Routine for a string of characters ************
 *******************************************************************************/
 void string_tx(char* a)
 {
@@ -67,7 +67,7 @@ void string_tx(char* a)
     }
 }
 /*******************************************************************************
-************************** main routine ****************************************
+************************** Main Routine ****************************************
 *******************************************************************************/
 int  main()
 {
@@ -75,19 +75,19 @@ int  main()
     unsigned int Fdiv;
     char value;
     TargetResetInit();
-    FIO3DIR=0xFF;
-    /******************* UART1 initialization *************************/
+    FIO3DIR=0xFF; // Setting the LEDs on the board as output
+    /******************* UART1 Initialization *************************/
     PINSEL0=0x00000050;
     U0LCR=0x83; // 8 bits, no Parity, 1 Stop bit
-    Fdiv=( 72000000 / 16 ) / 19200 ;  // Baud rate
+    Fdiv=(72000000/16)/19200 ;  // Baud rate
     U0DLM=Fdiv / 256;
     U0DLL=Fdiv % 256;
     U0LCR=0x03; // DLAB=0
     while(1)
     {
-        value=serial_rx();
-        FIO3PIN=value;
-        serial_tx(value);
+        value=serial_rx(); // Receiving value from the computer, i.e., key press
+        FIO3PIN=value;  // Displaying the value on the LEDs as output
+        serial_tx(value);  // Transmitting the value received by the processor back to computer to verify if correct data was received by it.
     }
     return 0;
 }
